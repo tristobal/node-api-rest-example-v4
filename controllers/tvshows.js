@@ -3,7 +3,6 @@ var mongoose = require("mongoose");
 //Nombre del modelo definido en ../models/tvshow.js
 var TVShow = mongoose.model("TVShow");
 
-
 //GET - Return all tvshows in the DB
 exports.findAllTVShows = function(req, res) {
   TVShow.find(function(err, tvshows) {
