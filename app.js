@@ -1,54 +1,68 @@
-var express         = require("express"),
-    app             = express(),
-    bodyParser      = require("body-parser"),
-    methodOverride  = require("method-override"),
-    mongoose        = require('mongoose');
+var express         = require("express");
+var app             = express();
+var bodyParser      = require("body-parser");
+var methodOverride  = require("method-override");
+var mongoose        = require('mongoose');
+
+var jwt = require('jwt-simple');
+app.set('jwtTokenSecret', 'YOUR_SECRET_STRING');
 
 // Middlewares
 app.use( bodyParser.urlencoded({ extended : true }) );
 app.use( bodyParser.json() );
 app.use( methodOverride() );
+//app.use(cors());
 
 //Ruta main
 var router = express.Router();
 router.get('/', function(req, res) {
-  res.send("Hello world!");
+    res.send("Hello world!");
 });
 app.use(router);
 
 
 //Conexión a BDD
-mongoose.connect('mongodb://user_db:pass_db@ds029051.mongolab.com:29051/mongotest', function(err, res) {
-  if(err) {
-    throw err;
-  } else {
-    console.log("Connected to Database");
-  }
+//mongoose.connect('mongodb://user_db:pass_db@ds029051.mongolab.com:29051/mongotest', function(err, res) {
+mongoose.connect('mongodb://localhost/jwttest', function(err, res) {
+    if(err) {
+        throw err;
+    } else {
+        console.log("Connected to Database");
+    }
 });
 
 //Modelos
-var models = require("./models/tvshow.js")(app, mongoose);
+var TVShowModel = require("./models/tvshow.js")(app, mongoose);
+var UserModel = require("./models/user.js")(app, mongoose);
 
 
 //Controlador
 var TVShowCtrl = require("./controllers/tvshows.js");
+var UserCtrl = require("./controllers/users.js");
 
 
 //Rutas API
-var tvshows = express.Router();
+var routes = express.Router();
 
-tvshows.route('/tvshows')
-  .get(TVShowCtrl.findAllTVShows)
-  .post(TVShowCtrl.addTVShow);
+routes.route('/tvshows')
+    .get(TVShowCtrl.findAllTVShows)
+    .post(TVShowCtrl.addTVShow);
 
-tvshows.route('/tvshows/:id')
-  .get(TVShowCtrl.findById)
-  .put(TVShowCtrl.updateTVShow)
-  .delete(TVShowCtrl.deleteTVShow);
+routes.route('/tvshows/:id')
+    .get(TVShowCtrl.findById)
+    .put(TVShowCtrl.updateTVShow)
+    .delete(TVShowCtrl.deleteTVShow);
 
-app.use('/api', tvshows);
+routes.route('/user')
+    .post(UserCtrl.addUser);
+
+routes.route('/token')
+    .post(UserCtrl.getUser);
+
+app.use('/api', routes);
 
 //Servidor
-app.listen(process.env.PORT, function(){
-  console.log("Node server running.");
+var port = process.env.PORT || 3000;
+app.listen(port, function(){
+    console.log("Node server running.");
 });

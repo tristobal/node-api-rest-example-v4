@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-
 var Schema = mongoose.Schema;
 
 var tvshowSchema = new Schema(
@@ -13,7 +12,7 @@ var tvshowSchema = new Schema(
     summary:  { type: String }
   },
   {
-    collection : 'tvshows'
+    collection: 'tvshows'
   }
 );
 
