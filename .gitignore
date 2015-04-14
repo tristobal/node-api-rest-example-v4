@@ -1,0 +1,48 @@
+*.class
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+######################
+# IDEA
+######################
+.idea
+*.iml
+
+######################
+# Eclipse
+######################
+ *.pydevproject
+.project
+.metadata
+*/bin/**
+tmp/**
+tmp/**/*
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.classpath
+.settings/
+.loadpath
+.springBeans
+/src/main/resources/rebel.xml
+# External tool builders
+.externalToolBuilders/
+
+######################
+# MAVEN
+######################
+/target/
+
+######################
+# NODE
+######################
+node_modules/
+npm-debug.log
