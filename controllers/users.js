@@ -2,6 +2,8 @@ var mongoose = require("mongoose");
 var moment = require('moment');
 var jwt = require('jwt-simple');
 
+var config = require('../config');
+
 //Nombre del modelo definido en ../models/tvshow.js
 var User = mongoose.model("User");
 
@@ -33,15 +35,13 @@ exports.getUser = function(req, res) {
                     if (isMatch) {
 
                         // Great, user has successfully authenticated, so we can generate and send them a token.
-                        //TODO Deprecation warning: moment().add(period, number) is deprecated. Please use moment().add(number, period).
-                        var expires = moment().add('days', 7).valueOf();
+                        var expires = moment().add(7, "days").unix(); //moment().add('days', 7).valueOf();
                         var token = jwt.encode(
                             {
                                 iss: user.id,
                                 exp: expires
                             },
-                            //TODO Cambiar a app.get('jwtTokenSecret')
-                            "token_secreto"
+                            config.TOKEN_SECRET
                         );
                         res.json({
                             token : token,

@@ -4,14 +4,11 @@ var bodyParser      = require("body-parser");
 var methodOverride  = require("method-override");
 var mongoose        = require('mongoose');
 
-var jwt = require('jwt-simple');
-app.set('jwtTokenSecret', 'YOUR_SECRET_STRING');
 
 // Middlewares
 app.use( bodyParser.urlencoded({ extended : true }) );
 app.use( bodyParser.json() );
 app.use( methodOverride() );
-//app.use(cors());
 
 //Ruta main
 var router = express.Router();
@@ -42,24 +39,26 @@ var UserCtrl = require("./controllers/users.js");
 
 
 //Rutas API
-var routes = express.Router();
+var router = express.Router();
 
-routes.route('/tvshows')
-    .get(TVShowCtrl.findAllTVShows)
-    .post(TVShowCtrl.addTVShow);
+var middleware = require('./middleware');
 
-routes.route('/tvshows/:id')
+router.route('/tvshows')
+    .get(middleware.ensureAuthenticated, TVShowCtrl.findAllTVShows)
+    .post(middleware.ensureAuthenticated, TVShowCtrl.addTVShow);
+
+router.route('/tvshows/:id')
     .get(TVShowCtrl.findById)
     .put(TVShowCtrl.updateTVShow)
     .delete(TVShowCtrl.deleteTVShow);
 
-routes.route('/user')
+router.route('/user')
     .post(UserCtrl.addUser);
 
-routes.route('/token')
+router.route('/token')
     .post(UserCtrl.getUser);
 
-app.use('/api', routes);
+app.use('/api', router);
 
 //Servidor
 var port = process.env.PORT || 3000;
