@@ -32,36 +32,28 @@ mongoose.connect('mongodb://localhost/jwttest', function(err, res) {
 var TVShowModel = require("./models/tvshow.js")(app, mongoose);
 var UserModel = require("./models/user.js")(app, mongoose);
 
-
-//Controlador
+//Controladores
 var TVShowCtrl = require("./controllers/tvshows.js");
 var UserCtrl = require("./controllers/users.js");
 
 
-//Rutas API
-var router = express.Router();
-
 var middleware = require('./middleware');
 
-/*router.route('/tvshows')
-    .get(middleware.ensureAuthenticated, TVShowCtrl.findAllTVShows)
-    .post(middleware.ensureAuthenticated, TVShowCtrl.addTVShow);*/
-
-router.get('/tvshows', middleware.ensureAuthenticated, TVShowCtrl.findAllTVShows);
-router.post('/tvshows', middleware.ensureAuthenticated, TVShowCtrl.addTVShow);
-
-router.route('/tvshows/:id')
-    .get(TVShowCtrl.findById)
-    .put(TVShowCtrl.updateTVShow)
-    .delete(TVShowCtrl.deleteTVShow);
-
-router.route('/user')
-    .post(UserCtrl.addUser);
-
-router.route('/token')
-    .post(UserCtrl.getUser);
-
+//Rutas API Privadas
+var router = express.Router();
+router.use(middleware.ensureAuthenticated);
+router.get('/tvshows', TVShowCtrl.findAllTVShows);
+router.post('/tvshows', TVShowCtrl.addTVShow);
+router.get('/tvshows/:id', TVShowCtrl.findById);
+router.put('/tvshows/:id', TVShowCtrl.updateTVShow);
+router.delete('/tvshows/:id', TVShowCtrl.deleteTVShow);
 app.use('/api', router);
+
+//Rutas API Públicas
+var publicRouter = express.Router();
+publicRouter.route('/token').post(UserCtrl.getUser);
+publicRouter.route('/user').post(UserCtrl.addUser);
+app.use('/public', publicRouter);
 
 //Servidor
 var port = process.env.PORT || 3000 ;

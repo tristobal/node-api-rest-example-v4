@@ -35,10 +35,10 @@ exports.getUser = function(req, res) {
                     if (isMatch) {
 
                         // Great, user has successfully authenticated, so we can generate and send them a token.
-                        var expires = moment().add(7, "days").unix(); //moment().add('days', 7).valueOf();
+                        var expires = moment().add(1, "days").unix(); //moment().add('days', 7).valueOf();
                         var token = jwt.encode(
                             {
-                                iss: user.id,
+                                sub: user.id,
                                 exp: expires
                             },
                             config.TOKEN_SECRET
