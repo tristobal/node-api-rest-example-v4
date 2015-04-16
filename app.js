@@ -43,9 +43,12 @@ var router = express.Router();
 
 var middleware = require('./middleware');
 
-router.route('/tvshows')
+/*router.route('/tvshows')
     .get(middleware.ensureAuthenticated, TVShowCtrl.findAllTVShows)
-    .post(middleware.ensureAuthenticated, TVShowCtrl.addTVShow);
+    .post(middleware.ensureAuthenticated, TVShowCtrl.addTVShow);*/
+
+router.get('/tvshows', middleware.ensureAuthenticated, TVShowCtrl.findAllTVShows);
+router.post('/tvshows', middleware.ensureAuthenticated, TVShowCtrl.addTVShow);
 
 router.route('/tvshows/:id')
     .get(TVShowCtrl.findById)
@@ -61,7 +64,7 @@ router.route('/token')
 app.use('/api', router);
 
 //Servidor
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 3000 ;
 app.listen(port, function(){
     console.log("Node server running.");
 });
