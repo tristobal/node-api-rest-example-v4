@@ -3,6 +3,7 @@ var app             = express();
 var bodyParser      = require("body-parser");
 var methodOverride  = require("method-override");
 var mongoose        = require('mongoose');
+var config          = require('./config');
 
 
 // Middlewares
@@ -19,8 +20,7 @@ app.use(router);
 
 
 //Conexión a BDD
-//mongoose.connect('mongodb://user_db:pass_db@ds029051.mongolab.com:29051/mongotest', function(err, res) {
-mongoose.connect('mongodb://localhost/jwttest', function(err, res) {
+mongoose.connect(config.DATABASE_LOCAL, function(err, res) {
     if(err) {
         throw err;
     } else {
