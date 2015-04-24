@@ -1,6 +1,6 @@
 var mongoose = require("mongoose");
 var moment = require('moment');
-var jwt = require('jwt-simple');
+var jwt = require('jsonwebtoken');
 
 var config = require('../config');
 
@@ -33,16 +33,14 @@ exports.getUser = function(req, res) {
                     res.send('Authentication error', 401);
                 } else {
                     if (isMatch) {
-
                         // Great, user has successfully authenticated, so we can generate and send them a token.
                         var expires = moment().add(1, "days").unix(); //moment().add('days', 7).valueOf();
-                        var token = jwt.encode(
-                            {
-                                sub: user.id,
-                                exp: expires
-                            },
-                            config.TOKEN_SECRET
-                        );
+                        var jsonClaims = {
+                            "sub": user.id,
+                            "exp": expires
+                        };
+                        var token = jwt.sign(jsonClaims, config.PRIVATE_KEY, { algorithm: 'RS512' });
+
                         res.json({
                             token : token,
                             expires : expires,

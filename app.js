@@ -6,10 +6,21 @@ var mongoose        = require('mongoose');
 var config          = require('./config');
 
 
+//CORS middleware
+var allowCrossDomain = function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', 'http://localhost:8101');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type,X-Auth-Token');
+
+    next();
+};
+
+
 // Middlewares
 app.use( bodyParser.urlencoded({ extended : true }) );
 app.use( bodyParser.json() );
 app.use( methodOverride() );
+app.use( allowCrossDomain );
 
 //Ruta main
 var router = express.Router();
