@@ -8,7 +8,7 @@ var config          = require('./config');
 
 //CORS middleware
 var allowCrossDomain = function(req, res, next) {
-    res.header('Access-Control-Allow-Origin', 'http://localhost:8101');
+    res.header('Access-Control-Allow-Origin', 'http://localhost:8100');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'Content-Type,X-Auth-Token');
 
@@ -64,6 +64,11 @@ app.use('/api', router);
 var publicRouter = express.Router();
 publicRouter.route('/token').post(UserCtrl.getUser);
 publicRouter.route('/user').post(UserCtrl.addUser);
+publicRouter.get('/certificate', function(req, res){
+    res.json({
+        certificate : config.PUBLIC_KEY
+    });
+});
 app.use('/public', publicRouter);
 
 //Servidor
