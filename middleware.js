@@ -5,14 +5,6 @@ var config = require('./config');
 
 exports.ensureAuthenticated = function(req, res, next) {
     console.log(req);
-    /*
-    if(!req.headers.authorization) {
-        return res.status(403).send({message: "La petición no tiene cabecera de autorización"});
-    }
-
-    var token = req.headers.authorization.split(" ")[1];
-    */
-
     /**
 	 * Take the token from:
 	 *

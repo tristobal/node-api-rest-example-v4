@@ -42,10 +42,12 @@ mongoose.connect(config.DATABASE_LOCAL, function(err, res) {
 //Modelos
 var TVShowModel = require("./models/tvshow.js")(app, mongoose);
 var UserModel = require("./models/user.js")(app, mongoose);
+var PlaceModel = require("./models/place.js")(app, mongoose);
 
 //Controladores
 var TVShowCtrl = require("./controllers/tvshows.js");
 var UserCtrl = require("./controllers/users.js");
+var PlaceCtrl = require("./controllers/places.js");
 
 
 var middleware = require('./middleware');
@@ -58,6 +60,13 @@ router.post('/tvshows', TVShowCtrl.addTVShow);
 router.get('/tvshows/:id', TVShowCtrl.findById);
 router.put('/tvshows/:id', TVShowCtrl.updateTVShow);
 router.delete('/tvshows/:id', TVShowCtrl.deleteTVShow);
+
+router.get('/places', PlaceCtrl.getAll);
+router.post('/place', PlaceCtrl.add);
+router.get('/place/:id', PlaceCtrl.findById);
+router.put('/place/:id', PlaceCtrl.update);
+router.delete('/place/:id', PlaceCtrl.delete);
+
 app.use('/api', router);
 
 //Rutas API Públicas
