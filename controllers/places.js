@@ -4,18 +4,18 @@ var mongoose = require("mongoose");
 var Place = mongoose.model("Place");
 
 exports.getAll = function(req, res) {
-    Place.find(function(err, tvshows) {
+    Place.find({}).populate('author').exec(function(err, places) {
         if(err) {
             res.send(500, err.message);
         } else {
             console.log('GET /places');
-            res.status(200).jsonp(tvshows);
+            res.status(200).jsonp(places);
         }
     });
 };
 
 exports.findById = function(req, res) {
-    Place.findById(req.params.id, function(err, tvshow) {
+    Place.findById(req.params.id).populate('author').exec(function(err, tvshow) {
         if(err) return res.send(500, err.message);
 
         console.log('GET /place/' + req.params.id);

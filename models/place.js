@@ -7,7 +7,7 @@ var placeSchema = new Schema(
     location:     { type: Array },
     address:      { type: String },
     notes:        { type: String },
-    author:       { type: Schema.Types.ObjectId },
+    author:       { type: Schema.ObjectId, ref: 'User'},
     creation:     { type: Date, default: Date.now },
     visited:      { type: Boolean },
     geoplacedata: { type: String }

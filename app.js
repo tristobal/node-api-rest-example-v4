@@ -60,13 +60,11 @@ router.post('/tvshows', TVShowCtrl.addTVShow);
 router.get('/tvshows/:id', TVShowCtrl.findById);
 router.put('/tvshows/:id', TVShowCtrl.updateTVShow);
 router.delete('/tvshows/:id', TVShowCtrl.deleteTVShow);
-
 router.get('/places', PlaceCtrl.getAll);
 router.post('/place', PlaceCtrl.add);
 router.get('/place/:id', PlaceCtrl.findById);
 router.put('/place/:id', PlaceCtrl.update);
 router.delete('/place/:id', PlaceCtrl.delete);
-
 app.use('/api', router);
 
 //Rutas API Públicas
