@@ -55,6 +55,8 @@ var middleware = require('./middleware');
 //Rutas API Privadas
 var router = express.Router();
 router.use(middleware.ensureAuthenticated);
+router.get('/users', UserCtrl.getAll);
+router.put('/user/:id', UserCtrl.update);
 router.get('/tvshows', TVShowCtrl.findAllTVShows);
 router.post('/tvshows', TVShowCtrl.addTVShow);
 router.get('/tvshows/:id', TVShowCtrl.findById);
